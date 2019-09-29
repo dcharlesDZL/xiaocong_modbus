@@ -23,7 +23,7 @@ typedef struct
       u16 speedMax;         //设定温度最大值
       u16 setStatus;        //设置运行状态
       s16 setCurrentMode;   //设置当前模式（1/2/3）
-      u16  setPwrOffMem;     //设置掉电记忆(0/1)
+      u16  setPwrOffMem;    //设置掉电记忆(0/1)
     } __attribute__ ((aligned (1))) masterBuf; 
     u8 masterPtr[40];
   } UN1;
@@ -86,3 +86,156 @@ struct _MachinePara       //机器参数
   u16 setCurrentMode = 0;
   u16 setPwrOffMem = 0;
 }MachinePara;
+
+
+
+struct {
+  time_t cpuTime;//CPU UNIX时间
+  time_t startupTime;
+
+  //byte appPwrOnAlm;
+  //byte gsmPwrOnAlm;
+  byte wifiPwrOnAlm;
+  int mqttState;
+  
+  //byte isMathExpress;
+  //byte dataTriged;
+  byte rs485Triged;
+  byte startSmartconfig;
+  byte alarm; 
+  byte sosAlarm;
+  byte paraRestore; 
+  //byte alarmFile;
+  byte yunUpload;
+  //byte emailTest;
+  //int messageReceiveID;   //短信有关
+  //byte isSetting;
+  byte portMode;
+  //byte modbusErrCounter;  相关文件被注释掉
+  //byte cronCommandAct1;    //没有用到该变量1/2/3
+  //byte cronCommandAct2;
+  //byte cronCommandAct3;
+  byte tempRemote;
+  byte remoteSetReply;
+  byte firstAlarmCount;
+  //byte offline;   //短信相关
+  //int controlDelayGSM;    //短信相关  
+  int controlDelayWIFI;
+  
+  byte wifisConnected;
+
+  //byte messageSend;   //短信相关
+  //byte gsmFirstMsg;   //短信相关
+  //byte syncTime;      gsm相关
+
+  //byte mqttIsConnectted; 未被使用变量
+
+  //byte wifiNetIsOn; 未使用
+ // byte gsmStatus;
+  //byte simStatus;
+  //byte rssi;
+  //byte iccid;         //ICCID为IC卡的唯一识别号码
+  //byte gsmrssi;
+
+  // bool gprsSocketStatus;
+  // String gsmImei;
+  // String gsmIccid;
+  // byte messageProc;   未使用
+} RunningPara;
+
+
+
+typedef union _SavePara 
+{
+  struct 
+  {
+    char jiami[30];
+    byte timeControlEn; //定时
+    byte ntpEn;         //网络授时
+    byte uploadEn;
+    //byte emailAlarmEn;
+    //byte appAlarmEn;
+    byte wxAlarmEn;
+    byte ldctrlEn;      //联动控制使能
+    byte alarmEn;       //报警总开关
+    byte fileEn;        //数据文件记录
+    //byte gsmAlarmEn;
+    //byte callAlarmEn;
+    byte controllerAlarmEn; //控制器内部报警
+    byte relayStartUp;
+    byte portMode;
+    
+    byte deviceID; 
+    byte wifiMode;  //0STA 1AP 2STA+AP
+    byte isDhcp;
+    byte ip[4];
+    byte dns[4];
+    byte gateway[4];
+    byte subnet[4];
+    //byte apip[4];    未使用
+
+    //int highTemp; //超温报警
+    //int lowTemp;  //低温报警
+    //int highHumi; //超湿
+    //int lowHumi;  //低湿
+    //int highspeed;//超速
+
+    //char dispName[DISP_LEN][20];
+    char dispValue[DISP_LEN][30];
+    
+    //char yuyincmds[YUYINLEN][10];
+    //char yuyinact[YUYINLEN][10];
+    //byte yuyindo[YUYINLEN];
+    
+    char stassid[20];
+    char stapasswd[20];
+    char apssid[20];
+    char appasswd[20];
+    char authname[20];
+    char authpasswd[20];
+
+    //char emailAccount[30];
+    //char emailPasswd[20];
+    //char emailTo[5][30];
+    //byte emailHost;
+    //char emailsubject[20];
+    
+    //char gsmTo[6][12];//短信接收
+    //char feeTemplate[30];//短信欠费模板
+
+    int wlinterval;//上传间隔
+    char customuptemp[120];
+    char customupurl[70];    
+    char customupaddr[30];//CUSTOM上传
+    char customupkey[45];
+    
+    int fileRecordInterval;
+    char fileTemplate[10];
+    int screenInterval;
+    char screenTemplate[10];
+
+    char openID[60];//微信OPENID
+    char openID2[60];//微信OPENID
+    char appid[60];//APP的UUID
+    char usercode[10];
+    char opencode[10];
+    char nickname[20];
+    char punycode[20];
+    
+    //byte cronhour[CRONLEN];
+    //byte cronmin[CRONLEN];
+    //byte cronEn[CRONLEN];   
+    //byte workday[CRONLEN];
+    //byte cronact[CRONLEN]; 
+
+    //char templAct[TEMPLLEN];
+    //char dataValue[TEMPLLEN][30];
+
+    char concmds[CONLEN][50];
+    byte conact[CONLEN];
+    //char iccid[30];       //ICCID为IC卡的唯一识别号码
+    //char imei[30];
+  } Para;
+  byte bytes[100];
+} SavePara;
+SavePara mSavePara;
